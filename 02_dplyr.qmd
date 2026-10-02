@@ -1,0 +1,122 @@
+---
+title: "dplyr"
+format: html
+editor: visual
+---
+
+```{r}
+library(readr)
+library(dplyr)
+
+
+pinguinos <- read_csv("datos/pinguinos.csv")
+```
+
+## Select
+
+```{r}
+select(pinguinos, especie, largo_pico_mm)
+
+select(pinguinos, -especie)
+
+select(pinguinos, starts_with("largo"))
+```
+## Filter
+
+```{r}
+filter(pinguinos, especie == "Adelia")
+
+filter(pinguinos, especie == "Adelia" | especie == "Barbijo")
+
+filter(pinguinos, especie %in% c("Adelia", "Barbijo"))
+```
+
+```{r}
+filter_out(pinguinos, especie == "Adelia")
+```
+## Pipe
+
+```{r}
+pinguinos |>
+  filter(especie == "Adelina") |> 
+  select(especie, largo_aleta_mm)
+
+```
+
+
+## group_by y summarise()
+
+```{r}
+pinguinos |> 
+  group_by(especie)
+
+pinguinos |> 
+  group_by(especie, isla)
+```
+
+
+```{r}
+pinguinos |> 
+  group_by(especie) |> 
+  summarise(promedio_aleta = mean(largo_aleta_mm, na.rm = TRUE))
+```
+
+```{r}
+pinguinos |> 
+  group_by(especie) |> 
+  summarise(promedio_aleta = mean(largo_aleta_mm, na.rm = TRUE),
+            cantidad = n())
+```
+
+```{r}
+pinguinos |> 
+  summarise(promedio_aleta = mean(largo_aleta_mm, na.rm = TRUE),
+            cantidad = n())
+```
+
+## reframe
+
+```{r}
+pinguinos |> 
+  group_by(especie) |> 
+  reframe(cuantil = quantile(masa_corporal_g, c(0.25, 0.75), na.rm = TRUE))
+```
+
+## mutate
+
+```{r}
+pinguinos |> 
+  mutate(especie_mayuscula = toupper(especie))
+
+pinguinos |> 
+  # filter(!is.na(largo_aleta_mm)) |> 
+  filter_out(is.na(largo_aleta_mm)) |>
+  mutate(proporcion = largo_aleta_mm/largo_pico_mm)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

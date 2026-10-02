@@ -1,0 +1,106 @@
+---
+title: "tidyr"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyr)
+library(dplyr)
+```
+
+## Datos
+
+```{r}
+paises_ancho <- readr::read_csv("https://raw.githubusercontent.com/rse-r/intro-programacion/main/datos/paises_ancho.csv")
+```
+
+### pivot_longer()
+
+```{r}
+paises_ancho
+```
+
+
+```{r}
+paises_largo <- pivot_longer(paises_ancho,
+             cols = c(starts_with("esperanza"),
+                      starts_with("poblacion"),
+                      starts_with("pib_")),
+             names_to = "variable_anio",
+             values_to = "valor")
+```
+
+```{r}
+paises_largo <- separate_wider_delim(paises_largo, 
+                     col = variable_anio,
+                     delim = "-",
+                     names = c("variable", "anio"))
+```
+
+```{r}
+paises_largo |> 
+  mutate(anio = as.integer(anio))
+  
+```
+
+```{r}
+paises_largo <-
+  pivot_longer(paises_ancho, 
+               cols= c(starts_with("esperanza"),
+                       starts_with("poblacion"),
+                       starts_with("pib_")),
+               names_to = "variable_anio",
+               values_to = "valores") |> 
+  separate_wider_delim(col = variable_anio, 
+                       delim = "-", 
+                       names = c("Variable", "Anio")) |> 
+  mutate(Anio = as.integer(Anio))
+```
+
+### pivot_wider()
+
+```{r}
+paises_medio <- pivot_wider(paises_largo, 
+            names_from = Variable,
+            values_from = valores)
+```
+
+
+```{r}
+pivot_wider(paises_largo,
+            names_from = c(Variable, Anio),
+            names_sep = "-",
+            values_from = valores)
+```
+
+
+```{r}
+paises_superduper_ancho <- pivot_wider(paises_largo,
+            names_from = c(Variable, Anio, pais),
+            names_sep = "-",
+            values_from = valores)
+```
+
+
+
+
+
+
+
+
+```{r}
+pivot_wider(paises_largo,
+            names_from = c(Variable, Anio, pais),
+            names_sep = "-",
+            values_from = valores)
+```
+
+
+
+
+
+
+
+
+

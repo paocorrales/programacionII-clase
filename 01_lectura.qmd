@@ -1,0 +1,20 @@
+---
+title: "Lectura"
+format: html
+editor: visual
+---
+
+## Lectura
+
+```{r}
+pinguinos_url <- "https://zenodo.org/records/12772944/files/pinguinos.csv?download=1"
+pinguinos_archivo <- "datos/pinguinos.csv" # esta ubicación, o sea la carpeta datos debe existir!
+
+download.file(url = pinguinos_url, destfile = pinguinos_archivo)  
+```
+
+```{r}
+library(readr)
+pinguinos <- read_csv("datos/pinguinos.csv")
+```
+

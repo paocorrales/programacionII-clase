@@ -1,0 +1,46 @@
+---
+title: "ggplot"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+
+library(ggplot2)
+library(datos)
+```
+
+
+## ggplot2
+
+```{r}
+paises <- datos::pais
+```
+
+```{r}
+ggplot(data = paises, mapping = aes(x = pib_per_capita, y = esperanza_de_vida)) +
+  geom_point()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
